@@ -31,4 +31,10 @@ function getRandomPhraseAsArray(arr){
 
 getRandomPhraseAsArray(phrases);
 
-// Get this on Github before go any further? Or just back up? 
+// Phrase to display function
+function addPhraseToDisplay(arr){
+    const li = 
+    const ul = 
+}
+
+addPhraseToDisplay(phrases);

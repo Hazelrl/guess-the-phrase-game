@@ -22,19 +22,38 @@ startBtn.addEventListener('click', ()=> {
 function getRandomPhraseAsArray(arr){
     const randomNumber = Math.floor(Math.random() * arr.length);
     const randomPhrase = arr[randomNumber];
-    const randomPhraseSplit = randomPhrase.split('');   
-    // console.log(randomNumber);
-    // console.log(randomPhrase);
-    // console.log(randomPhraseSplit);
+    const randomPhraseSplit = randomPhrase.split('');  
     return randomPhraseSplit; 
 } 
 
-getRandomPhraseAsArray(phrases);
+// Pass phrases array, and assign returned value to phraseArray
+const phraseArray = getRandomPhraseAsArray(phrases);
 
-// Phrase to display function
+// Add phrase to display
 function addPhraseToDisplay(arr){
-    const li = 
-    const ul = 
+    console.log(arr);
+    for (letter in arr) {
+        // Select ul
+        const ul = document.querySelector('ul');
+        // Create li
+        const li = document.createElement('li');
+
+        // Set li text content to letter in array
+        li.textContent = arr[letter];
+        
+        // Add class of space or letter
+        if(li.textContent===' '){
+            li.className = "space";
+        }
+        else {
+            li.className = "letter";
+        }
+        
+        // Add item to list
+        ul.appendChild(li);
+    }
+    
 }
 
-addPhraseToDisplay(phrases);
+// Call addPhraseToDisplay function, passing phraseArray
+addPhraseToDisplay(phraseArray);

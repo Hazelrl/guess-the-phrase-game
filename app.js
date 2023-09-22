@@ -7,6 +7,7 @@ const phrase = document.getElementById("phrase");
 let missed = 0;
 const startBtn = document.querySelector(".btn__reset");
 const keyboard = document.getElementById('qwerty');
+const hearts = document.querySelector('ol');
 const phrases = [
     'Richard Of York Gave Battle In Vain',
     'Never Eat Shredded Wheat',
@@ -86,39 +87,54 @@ function checkLetter(buttonClicked) {
 // Event listener for keyboard clicks
 keyboard.addEventListener('click', (e) => {
     if (e.target.tagName === 'BUTTON'){
-
-    console.log('You clicked on the keyboard');
-    e.target.className = "chosen";
-    checkLetter(e.target);
+    const letterChosen = e.target; 
+    console.log(`You clicked on ${letterChosen.textContent}`);
+    letterChosen.className = "chosen";
+    const result = checkLetter(letterChosen);
+    if(result === null && missed<5){
+        const heartImgs = hearts.querySelectorAll('li img');
+        for (let i = 0; i < heartImgs.length; i++){
+            if (i === missed) {
+                heartImgs[i].src = 'images/lostHeart.png';
+            }
+        }
+        missed++;
+        console.log(missed);
+    }
+    checkWin();
     }
 });
 
+function checkWin() {
+    const letterLis = document.getElementsByClassName('letter');
+    const showLis = document.getElementsByClassName('show');
+    console.log(letterLis.length);
+    console.log(showLis.length);
+    if(missed >= 5){
+        const overlay = document.getElementById('overlay');
+        const h2 = overlay.querySelector('h2');
+        const link = overlay.querySelector('a');
+        overlay.className = 'lose';
+        overlay.style.display = 'flex';
+        h2.textContent = 'You lost';
+        link.textContent = 'Go back';
+
+        link.addEventListener('click', ()=> {
+            overlay.style.display = 'none';
+        });
+    };
+    if(letterLis.length === showLis.length){
+        const overlay = document.getElementById('overlay');
+        overlay.className = 'win';
+        overlay.style.display = 'flex';
+        const h2 = overlay.querySelector('h2');
+        const link = overlay.querySelector('a');
+        h2.textContent = 'You won';
+        link.textContent = 'Go back';
+    };
+    console.log("checkWin has run");
+};
 
 });
 
-
-// const letters = document.getElementsByClassName('letter');
-// console.log(letters);
-
-// const lis = document.querySelectorAll('li');
-
-// lis.forEach((li) => {
-//     const liTextContent = li.textContent;
-//     console.log(liTextContent);
-//   });
-
-// // CheckLetter function (to be used inside eventListener)
-// function checkLetter(buttonClicked){
-//     // const lis = document.querySelectorAll('li');
-//     // const lisValues = lis.innerHTML;
-//     // console.log(lisValues);
-// };
-
-// // buttons.forEach(button => {
-// //     button.addEventListener('click', (e) => {
-// //         console.log("You clicked a button");
-// //     });
-// // });
-
-// // if (e.target.className === 'letter'){
-// // If event.target === button
+// Need to remove repetition, do extra credit, remove console.logs

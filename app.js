@@ -8,6 +8,9 @@ let missed = 0;
 const startBtn = document.querySelector(".btn__reset");
 const keyboard = document.getElementById('qwerty');
 const hearts = document.querySelector('ol');
+const overlay = document.getElementById('overlay');
+const heartImgs = hearts.querySelectorAll('li img');
+const keyBoardButtons = qwerty.querySelectorAll('button');
 const phrases = [
     'Richard Of York Gave Battle In Vain',
     'Never Eat Shredded Wheat',
@@ -16,9 +19,14 @@ const phrases = [
     'Please Excuse My Dear Aunt Sally'
 ];
 
+// Create Reset game button
+const resetGameButton = document.createElement('a');
+resetGameButton.className = 'btn__reset';
+resetGameButton.textContent = 'Reset game';
+
+
 // Event listener to hide overlay when start button is clicked
 startBtn.addEventListener('click', ()=> {
-    const overlay = document.getElementById('overlay');
     overlay.style.display = 'none';
 });
 
@@ -31,8 +39,7 @@ function getRandomPhraseAsArray(arr){
 } 
 
 // Pass phrases array, and assign returned value to phraseArray
-const phraseArray = getRandomPhraseAsArray(phrases);
-
+let phraseArray = getRandomPhraseAsArray(phrases);
 
 
 // Add phrase to display
@@ -76,6 +83,12 @@ function checkLetter(buttonClicked) {
         if(buttonClicked.textContent === listItemText){
             lis[i].className = 'letter show';
             match = buttonClicked.textContent;
+
+            // CSS transitions for each letter in the phrase display as they are revealed
+            lis[i].style.color = 'var(--color-keys)';
+            lis[i].style.border = '2px solid';
+            lis[i].style.transitionProperty = 'background, border-radius, color';
+            lis[i].style.transitionDuration = '.5s';
         }
     }
     console.log(buttonClicked.textContent);
@@ -92,7 +105,7 @@ keyboard.addEventListener('click', (e) => {
     letterChosen.className = "chosen";
     const result = checkLetter(letterChosen);
     if(result === null && missed<5){
-        const heartImgs = hearts.querySelectorAll('li img');
+
         for (let i = 0; i < heartImgs.length; i++){
             if (i === missed) {
                 heartImgs[i].src = 'images/lostHeart.png';
@@ -118,6 +131,7 @@ function checkWin() {
         overlay.style.display = 'flex';
         h2.textContent = 'You lost';
         link.textContent = 'Go back';
+        overlay.appendChild(resetGameButton);
 
         link.addEventListener('click', ()=> {
             overlay.style.display = 'none';
@@ -131,10 +145,52 @@ function checkWin() {
         const link = overlay.querySelector('a');
         h2.textContent = 'You won';
         link.textContent = 'Go back';
+        overlay.appendChild(resetGameButton);
+
     };
     console.log("checkWin has run");
 };
 
+// Function to remove existing phrase
+function removeExistingPhrase() {
+    const phraseUl = document.querySelector('#phrase ul');
+    phraseUl.innerHTML = '';
+    console.log(phraseUl);
+};
+
+
+// Add Event Listener for Reset game button
+resetGameButton.addEventListener('click', ()=> {
+    console.log('You clicked Reset game');
+
+    // Reset missed to 0
+    missed = 0; 
+
+    // Reset keyboard buttons to not chosen
+    keyBoardButtons.forEach((keyBoardButton) => {
+        if (keyBoardButton.classList.contains('chosen')) {
+            keyBoardButton.classList.remove('chosen');
+        }
+    });
+
+    // Reset heart image to live heart
+    for (let i = 0; i < heartImgs.length; i++){
+            heartImgs[i].src = 'images/liveHeart.png';
+    }
+    // Remove existing phrase
+    removeExistingPhrase(); 
+
+    // Add new random phrase to display
+    getRandomPhraseAsArray(phrases); 
+    let phraseArray = getRandomPhraseAsArray(phrases);
+    addPhraseToDisplay(phraseArray); 
+
+    // Remove overlay
+    overlay.style.display = 'none';
+
 });
 
-// Need to remove repetition, do extra credit, remove console.logs
+
+});
+
+// Need to remove repetition, remove console.logs, tidy up comments

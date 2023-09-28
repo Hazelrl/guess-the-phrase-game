@@ -71,7 +71,7 @@ document.addEventListener('DOMContentLoaded', ()=> {
                 lis[i].className = 'letter show';
                 match = buttonClicked.textContent;
 
-                // CSS transitions for each letter in the phrase display as they are revealed
+                // Transitions for each letter in the phrase display as they are revealed
                 lis[i].style.color = 'var(--color-keys)';
                 lis[i].style.border = '2px solid';
                 lis[i].style.transitionProperty = 'background, border-radius, color';
@@ -142,20 +142,26 @@ document.addEventListener('DOMContentLoaded', ()=> {
     keyboard.addEventListener('click', (e) => {
         if (e.target.tagName === 'BUTTON'){
         const letterChosen = e.target; 
-        letterChosen.className = "chosen";
-        const result = checkLetter(letterChosen);
-        if(result === null && missed<5){
 
-            for (let i = 0; i < heartImgs.length; i++){
-                if (i === missed) {
-                    heartImgs[i].src = 'images/lostHeart.png';
+        if(letterChosen.className === 'chosen'){
+            e.preventDefault(); // So that a letter cannot be clicked twice
+        } else {
+            letterChosen.className = "chosen";
+            const result = checkLetter(letterChosen);
+            if(result === null && missed<5){
+
+                for (let i = 0; i < heartImgs.length; i++){
+                    if (i === missed) {
+                        heartImgs[i].src = 'images/lostHeart.png';
+                    }
                 }
+                missed++;
             }
-            missed++;
+            checkWin();
         }
-        checkWin();
         }
     });
+
 
     // Event Listener for Reset game button
     resetGameButton.addEventListener('click', ()=> {

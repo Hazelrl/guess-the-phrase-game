@@ -11,11 +11,11 @@ document.addEventListener('DOMContentLoaded', ()=> {
     const heartImgs = hearts.querySelectorAll('li img');
     const keyBoardButtons = keyboard.querySelectorAll('button');
     const phrases = [
-        'Richard Of York Gave Battle In Vain',
-        'Never Eat Shredded Wheat',
-        'My Very Easy Method Just Speeds Up Naming Planets',
-        'Father Charles Goes Down and Ends Battle',
-        'Please Excuse My Dear Aunt Sally'
+        'Every cloud has a silver lining',
+        'A picture is worth a thousand words',
+        'The early bird catches the worm',
+        'Actions speak louder than words',
+        'Beauty is in the eye of the beholder'
     ];
 
     // Create Reset game button to be added to won and lost overlays
